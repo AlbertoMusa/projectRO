@@ -33,6 +33,10 @@ public class LocalSearch
 				}
 			}
 		}
+		
+		//qua controllo gli scambi singoli
+		
+		//qua controllo gli scambi tra L e B
 	}
 	
 	private static boolean compara(Rotta a, Rotta b, Nodo aa, Nodo bb, int c)
@@ -42,12 +46,19 @@ public class LocalSearch
 			System.out.println("esco0");
 			return false;
 		}
-		if(!(aa.getTipo().equals(bb.getTipo()) && aa.getTipo().equals("L")))
+		if(!(aa.getTipo().equals(bb.getTipo())))
 		{
 			//System.out.println("esco1");
 			return false;
 		}
-		if(a.getQuantitaScarico()-aa.getQuantita()+bb.getQuantita()>c || b.getQuantitaScarico()-bb.getQuantita()+aa.getQuantita()>c)
+		if(aa.getTipo().equals("L") &&
+				a.getQuantitaScarico()-aa.getQuantita()+bb.getQuantita()>c || b.getQuantitaScarico()-bb.getQuantita()+aa.getQuantita()>c)
+		{
+			//System.out.println("esco2");
+			return false;
+		}
+		if(aa.getTipo().equals("B") &&
+				a.getQuantitaCarico()-aa.getQuantita()+bb.getQuantita()>c || b.getQuantitaCarico()-bb.getQuantita()+aa.getQuantita()>c)
 		{
 			//System.out.println("esco2");
 			return false;
