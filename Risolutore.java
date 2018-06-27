@@ -13,7 +13,8 @@ public class Risolutore
 		allineamentoNumeroRotte(istanza);
 		istanza.stampaRotte();
 
-//		//LocalSearch(istanza)
+ 		LocalSearch.esegui(istanza);
+ 		istanza.stampaRotte();
 		
 		return istanza;
 	}
