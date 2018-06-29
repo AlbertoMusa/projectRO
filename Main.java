@@ -15,11 +15,11 @@ public class Main {
 		System.out.println("FINE SEQ");
 
 		//reinizializzazione problema
-		istanza = letturaFile(file);
+		//istanza = letturaFile(file);
 
 		//risoluzione problema parallelo
-		istanza = Risolutore.risolvi(istanza, "SEQ");		
-		System.out.println("FINE PAR");
+		//istanza = Risolutore.risolvi(istanza, "SEQ");		
+		//System.out.println("FINE PAR");
 	}
 	
 	//stampo le info dell'istanza

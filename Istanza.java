@@ -37,6 +37,7 @@ public class Istanza
 	{
 		System.out.println("\n\nELENCO ROTTE");
 		int k = 1;
+		this.costoTotale=0;
 		for(Rotta r: this.rotte)
 		{
 			String str = "";
@@ -45,10 +46,12 @@ public class Istanza
 			else
 				str = "Not OK";
 			
-			System.out.println("Rotta_" + k + ": " + str + "   " + r.getNodiToString() + "  " + "[ " + r.getQuantitaScarico() + " ; " + r.getQuantitaCarico() + " ]");
+			System.out.println("\t\t\t\t\t\t\tRotta_" + k + ":\t" + str  + "\t[ " + r.getQuantitaScarico() + " ; " + r.getQuantitaCarico() + " ]\t" + r.getCosto());
+			System.out.println(r.getNodiToString());
+			this.costoTotale= this.costoTotale + r.getCosto();
 			k++;
 		}
-		System.out.println("\n\n");
+		System.out.println(this.costoTotale + "\n\n");
 	}
 	
 	public Nodo getDeposito()
@@ -117,4 +120,5 @@ public class Istanza
 	{
 		Collections.sort(this.rotte, new RottaComparatorByNumNodes());
 	}
+	
 }

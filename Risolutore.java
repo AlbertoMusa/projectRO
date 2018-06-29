@@ -9,9 +9,11 @@ public class Risolutore
 	{	
 		ClarkWright.esegui(mode, istanza);
 		istanza.stampaRotte();
+		System.out.println("\nFINE C&W\n");
 		
 		allineamentoNumeroRotte(istanza);
 		istanza.stampaRotte();
+		System.out.println("\nFINE ALLINEAMENTO\n");
 
  		LocalSearch.esegui(istanza);
  		istanza.stampaRotte();

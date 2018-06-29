@@ -36,7 +36,6 @@ public class Rotta
 		return -1;
 	}
 	
-	
 	/*restituisco:
 	 * 0 se il nodo e' a sinistra
 	 * 1 se il nodo e' interno
@@ -88,6 +87,7 @@ public class Rotta
 	
 	public double getCosto()
 	{
+		calcolaCosto();//aggiunto alberto
 		return this.costo;
 	}
 	
@@ -178,6 +178,21 @@ public class Rotta
 		return true;
 	}
 	
+	public void updateLoad()
+	{
+		int carico = 0;
+		int scarico = 0;
+		
+		for(Nodo n: this.getLineHauls())
+			scarico += n.getQuantita();
+				
+		for(Nodo n: this.getBackHauls())
+			carico += n.getQuantita();
+		
+		this.quantitaScarico = scarico;
+		this.quantitaCarico = carico;
+	}
+	
 	//rimuovo il primo nodo della lista e lo restituisco
 	public Nodo removeFirst()
 	{
@@ -186,4 +201,36 @@ public class Rotta
 		
 		return d;
 	}
+	
+	//aggiunte alberto
+	
+	public Rotta(Nodo deposito, ArrayList<Nodo> line, ArrayList<Nodo> back)
+	{
+		this.clienti = new ArrayList<Nodo>();
+		this.clienti.add(deposito);
+		for(int i=0; i<line.size(); i++)
+		{
+			this.clienti.add(line.get(i));
+			this.quantitaScarico = this.quantitaScarico + line.get(i).getQuantita();
+		}
+		for(int i=0; i<back.size(); i++)
+		{
+			this.clienti.add(back.get(i));
+			this.quantitaCarico = this.quantitaCarico + back.get(i).getQuantita();
+		}
+		this.clienti.add(deposito);
+	}
+	
+	public void calcolaCosto()
+	{
+		this.costo=0;
+		for(int i=0; i<this.clienti.size()-1; i++)
+		{
+			this.costo = this.costo + Math.sqrt((clienti.get(i).getX()-clienti.get(i+1).getX())*
+					(clienti.get(i).getX()-clienti.get(i+1).getX())+
+					(clienti.get(i).getY()-clienti.get(i+1).getY())*
+					(clienti.get(i).getY()-clienti.get(i+1).getY()));
+		}
+	}
+	
 }
