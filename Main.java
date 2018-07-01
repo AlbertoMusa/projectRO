@@ -1,25 +1,52 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.FileWriter;
 
 public class Main {
 	
-	public static void main(String [] args)
+	public static void main(String [] args) throws IOException
 	{
-		//inizializzazione problema
-		String file = args[0];
-		Istanza istanza = letturaFile(file);
+		String folderName = "/home/alberto/Workbench/Eclipse/RO/bin/Istance/";
+		File folder = new File(folderName);
+		File[] listOfFiles = folder.listFiles();
 		
-		//risoluzione problema sequenziale
-		istanza = Risolutore.risolvi(istanza, "SEQ");				
-		System.out.println("FINE SEQ");
+		//File sol = new File("soluzioni2.txt");
+		//sol.createNewFile();
+	    //FileWriter writer = new FileWriter(sol);
+	      
+		for(File f: listOfFiles)
+		{
+			// togli ! e metti nome file
+			//if(!f.getName().equals("info.txt")){
+			if(f.getName().equals("C4.txt")){
+				//inizializzazione problema
+				//String file = args[0];
+				System.out.println("----------------------------------------------------\n" + f.getName() + "\n");
+				String file = folderName + f.getName();
+				Istanza istanzaS = letturaFile(file);
+				System.out.println("n veicoli: " + istanzaS.getNumVeicoli() + "\tcapacita: " +istanzaS.getCapacitaVeicoli());
+				
+				//risoluzione problema sequenziale
+				istanzaS = Risolutore.risolvi(istanzaS, "SEQ");				
+		
+				//reinizializzazione problema
+				Istanza istanzaP = letturaFile(file);
+				
+				System.out.println("--------------------------------------------------------------------\n--------------------------------------------------------------------");
+		
+				//risoluzione problema parallelo
+				istanzaP = Risolutore.risolvi(istanzaP, "PAR");		
+				
+				System.out.println("\n" +f.getName() + "\tSEQ: " + istanzaS.getCostoTotale() + "\tPAR: " + istanzaP.getCostoTotale());
+				//writer.write(f.getName() + "\tSEQ: " + istanzaS.getCostoTotale() + "\tPAR: " + istanzaP.getCostoTotale() + "\n");
+				//writer.write("\tSeq\tn veivoli:" + istanzaS.getNumVeicoli() + "\tn rotte:" + istanzaS.getRotte().size() + "\n");
+				//writer.write("\tPar\tn veivoli:" + istanzaP.getNumVeicoli() + "\tn rotte:" + istanzaP.getRotte().size() + "\n\n");
 
-		//reinizializzazione problema
-		//istanza = letturaFile(file);
-
-		//risoluzione problema parallelo
-		//istanza = Risolutore.risolvi(istanza, "SEQ");		
-		//System.out.println("FINE PAR");
+			}
+		}
+		//writer.close();
 	}
 	
 	//stampo le info dell'istanza
@@ -31,7 +58,7 @@ public class Main {
 		
 		System.out.println("Numero clienti = " + numClienti);
 		System.out.println("Numero veicoli = " + istanza.getNumVeicoli());
-		System.out.println("Capacità veicoli = " + istanza.getCapacitaVeicoli());
+		System.out.println("CapacitÃ  veicoli = " + istanza.getCapacitaVeicoli());
 		System.out.println("---------------------------------------");
 		System.out.println("Deposito");
 		System.out.println("Coord { " + dep.getX() +  " , " + dep.getY() + " }");

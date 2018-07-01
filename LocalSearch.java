@@ -12,7 +12,7 @@ public class LocalSearch
 		eseguiB(istanza);
 	}
 	
-	private static void eseguiA(Istanza istanza)
+	public static void eseguiA(Istanza istanza)
 	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
@@ -45,10 +45,10 @@ public class LocalSearch
 			}
 		}
 		istanza.stampaRotte();
-		System.out.println("FINE LS FASE1");
+		System.out.println("----------------------FINE LS FASE1----------------------");
 	}
 	
-	private static void eseguiB(Istanza istanza)
+	public static void eseguiB(Istanza istanza)
 	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
@@ -79,7 +79,7 @@ public class LocalSearch
 			}
 		}	
 		istanza.stampaRotte();
-		System.out.println("FINE LS FASE2");
+		System.out.println("----------------------FINE LS FASE2----------------------");
 	}
 	
 	private static void eseguiC(Istanza istanza)
@@ -104,7 +104,7 @@ public class LocalSearch
 			}
 		}
 		istanza.stampaRotte();
-		System.out.println("FINE LS FASE3");
+		System.out.println("----------------------FINE LS FASE3----------------------");
 	}
 	
 	private static boolean compara(Rotta a, Rotta b, Nodo aa, Nodo bb, int c)

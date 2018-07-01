@@ -204,6 +204,7 @@ public class Rotta
 		return d;
 	}
 	
+	
 	//aggiunte alberto
 	
 	public Rotta(Nodo deposito, ArrayList<Nodo> line, ArrayList<Nodo> back)
@@ -233,6 +234,39 @@ public class Rotta
 					(clienti.get(i).getY()-clienti.get(i+1).getY())*
 					(clienti.get(i).getY()-clienti.get(i+1).getY()));
 		}
+	}
+	
+	//da usare per creare copie per valore
+	private Rotta(ArrayList<Nodo> _clienti)
+	{
+		this.clienti = new ArrayList<Nodo>();
+		for(Nodo c : _clienti)
+			this.clienti.add(c);
+
+		this.updateCost();
+		this.updateLoad();
+	}
+	
+	public void updateCost()
+	{
+		double distanza = 0;
+		//System.out.println("ROTTA");
+		for(int i = 0; i < this.getClienti().size() - 1; i++)
+		{
+			Nodo a = this.getClienti().get(i);
+			Nodo b = this.getClienti().get(i+1);
+			double d = DistanceCalculator.calcolaDistanza(a, b);
+			//System.out.println("DIST = " + d);
+			distanza += d;
+		}
+		this.costo = distanza;
+		//System.out.println("DIST_TOT = " + distanza);
+	}
+	
+	public Rotta copiaDi()
+	{
+		Rotta a = new Rotta(this.clienti);
+		return a;
 	}
 	
 }

@@ -10,6 +10,12 @@ public class Istanza
 	private ArrayList<Rotta> rotte;
 	private double costoTotale; //costo totale, ovvero la somma delle distanze di tutte le rotte
 
+	public Istanza(int numVeicoli, int capacitaVeicoli)
+	{
+		this.numVeicoli = numVeicoli;
+		this.capacitaVeicoli = capacitaVeicoli;
+	}
+	
 	public Istanza(Nodo deposito, Nodo[] clienti, int numVeicoli, int capacitaVeicoli)
 	{
 		this.deposito = deposito;
@@ -22,10 +28,13 @@ public class Istanza
 		this.costoTotale = 0;
 	}
 	
-	public void setRotte(ArrayList<Rotta> rotte)
+	public void setRotte(ArrayList<Rotta> _rotte)
 	{
-		this.rotte = rotte;
-	}
+		//this.rotte = rotte;
+		this.rotte.clear();
+		for(Rotta r : _rotte)
+			this.rotte.add(r.copiaDi());
+}
 	
 	
 	public void rimuovoRotta(Rotta r)
@@ -35,7 +44,7 @@ public class Istanza
 	
 	public void stampaRotte()
 	{
-		System.out.println("\n\nELENCO ROTTE");
+		System.out.println("\nELENCO ROTTE");
 		int k = 1;
 		this.costoTotale=0;
 		for(Rotta r: this.rotte)
@@ -51,7 +60,14 @@ public class Istanza
 			this.costoTotale= this.costoTotale + r.getCosto();
 			k++;
 		}
-		System.out.println(this.costoTotale + "\n\n");
+		System.out.println("\nCosto Tot:\t" +this.costoTotale);
+	}
+	
+	public void setCosto()
+	{
+		this.costoTotale=0;
+		for(Rotta r: this.rotte)
+			this.costoTotale= this.costoTotale + r.getCosto();
 	}
 	
 	public Nodo getDeposito()
@@ -119,6 +135,11 @@ public class Istanza
 	public void riordinaRotteDallaPiuCortaAllaPiuLunga()
 	{
 		Collections.sort(this.rotte, new RottaComparatorByNumNodes());
+	}
+	
+	public double getCostoTotale()
+	{
+		return this.costoTotale;
 	}
 	
 }
