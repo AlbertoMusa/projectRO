@@ -33,7 +33,7 @@ public class LocalSearch
 							istanza.getRotte().get(i).getClienti().get(j),
 							istanza.getRotte().get(k).getClienti().get(w),
 							j,w);
-							System.out.println(i + " " + j + " " + k + " " + w);
+							//System.out.println(i + " " + j + " " + k + " " + w);
 							i=0;
 							j=1;
 							k=0;
@@ -67,7 +67,7 @@ public class LocalSearch
 								istanza.getRotte().get(k),
 								istanza.getRotte().get(i).getClienti().get(j),
 								j,w);
-								System.out.println(i + " " + j + " " + k + " " + w);
+								//System.out.println(i + " " + j + " " + k + " " + w);
 								i=0;
 								j=1;
 								k=0;

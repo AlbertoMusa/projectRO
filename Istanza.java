@@ -52,24 +52,33 @@ public class Istanza
 		System.out.println("\nELENCO ROTTE");
 		int k = 1;
 		this.costoTotale=0;
-		boolean flag =true;
+		int fixedNodes = 0;
+		
+		boolean singoleRotteOk = true;
 		for(Rotta r: this.rotte)
 		{
 			String str = "";
+			fixedNodes += r.getLineHauls().size() + r.getBackHauls().size();
 			if(r.isOk(this.capacitaVeicoli))
 				str = "OK";
 			else
 			{
-				str = "Not OK";
-				flag = false;
+				str = "NON OK";
+				singoleRotteOk = false;
 			}
-			if(flag)
-				this.status="OK";
-			System.out.println("\t\t\t\t\t\t\tRotta_" + k + ":\t" + str  + "\t[ " + r.getQuantitaScarico() + " ; " + r.getQuantitaCarico() + " ]\t" + r.getCosto());
-			System.out.println(r.getNodiToString());
+
+			System.out.println("Rotta_" + k + ":\t" + str  + "\t[ " + r.getQuantitaScarico() + " ; " + r.getQuantitaCarico() + " ]\t" + r.getCosto() + "\t" + r.getNodiToString());
 			this.costoTotale= this.costoTotale + r.getCosto();
 			k++;
 		}
+		
+		if(singoleRotteOk && (fixedNodes == this.clienti.length))
+			this.status="OK";
+		else
+			this.status="NON OK";
+		
+		assert this.status == "OK";
+		
 		System.out.println("\nCosto Tot:\t" +this.costoTotale);
 	}
 	

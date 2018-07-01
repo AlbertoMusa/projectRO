@@ -132,13 +132,20 @@ public class Rotta
 	{
 		boolean order = isOrderOk();
 		boolean load = isLoadOk(capacita);
-		return order && load;
+		
+		boolean ok = order && load;
+
+		assert load==true;
+		assert order==true;
+			
+		return ok;
 	}
 	
 	private boolean isOrderOk()
 	{
 		if(this.getLineHauls().size()==0)
 			return false;
+		
 		boolean BFound = false;
 		for(Nodo n: this.getClienti())
 		{
@@ -154,11 +161,7 @@ public class Rotta
 	}
 	
 	private boolean isLoadOk(int capacita)
-	{
-		int a;
-		if(this.getClienti().size() == 7)
-			a = 1;
-		
+	{		
 		int carico = 0;
 		int scarico = 0;
 		

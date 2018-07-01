@@ -8,7 +8,8 @@ public class Main {
 	
 	public static void main(String [] args) throws IOException
 	{
-		String folderName = "/home/alberto/Workbench/Eclipse/RO/bin/Istance/";
+		//String folderName = "/home/alberto/Workbench/Eclipse/RO/bin/Istance/";
+		String folderName = "D:\\Universit‡\\materiale didattico\\Facolt‡ di Scienze\\Magistrale\\SEM4\\DS\\projectRO\\Istance\\";
 		File folder = new File(folderName);
 		File[] listOfFiles = folder.listFiles();
 		
@@ -23,8 +24,10 @@ public class Main {
 			//if(f.getName().equals("C4.txt")){
 				//inizializzazione problema
 				//String file = args[0];
+				
 				System.out.println("----------------------------------------------------\n" + f.getName() + "\n");
 				String file = folderName + f.getName();
+				
 				Istanza istanzaS = letturaFile(file);
 				System.out.println("n veicoli: " + istanzaS.getNumVeicoli() + "\tcapacita: " +istanzaS.getCapacitaVeicoli());
 				
@@ -60,7 +63,7 @@ public class Main {
 		
 		System.out.println("Numero clienti = " + numClienti);
 		System.out.println("Numero veicoli = " + istanza.getNumVeicoli());
-		System.out.println("Capacit√É  veicoli = " + istanza.getCapacitaVeicoli());
+		System.out.println("Capacit‡  veicoli = " + istanza.getCapacitaVeicoli());
 		System.out.println("---------------------------------------");
 		System.out.println("Deposito");
 		System.out.println("Coord { " + dep.getX() +  " , " + dep.getY() + " }");
