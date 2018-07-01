@@ -113,67 +113,50 @@ public class Risolutore
 
 	public static void allineamentoNumeroRotte2(Istanza istanza)
 	{
-		Collections.sort(istanza.getRotte(), new RottaComparatorByAvgCapacityNodes());
-		//Collections.sort(istanza.getRotte(), new RottaComparatorByNumNodes());
-	
-		int i = 0;
-		int p = 1;
-		while(istanza.getNumVeicoli() < istanza.getRotte().size())	
-		{	
-			for(int j = 0; j < istanza.getRotte().size(); j++)
+		int p=1;
+		int r=0;
+		while(istanza.getNumVeicoli()<istanza.getRotte().size())
+		{
+			istanza.stampaRotte();
+			int i=0;
+			while(i<istanza.getRotte().size())
 			{
-				Nodo nodo = istanza.getRotte().get(i).getClienti().get(p);
-				if(nodo.getTipo().equals("L"))
-				{		
-					if((i!=j && (nodo.getQuantita() + istanza.getRotte().get(j).getQuantitaScarico() <= istanza.getCapacitaVeicoli())))
-					{
-						if(!((istanza.getRotte().get(i).getLineHauls().size()==1) && (istanza.getRotte().get(i).getBackHauls().size()>0)))
-						{
-							p=2;
-						}
-						else
-						{
-							istanza.getRotte().get(j).aggiungoNodoASinistra(nodo);
-							istanza.getRotte().get(i).removeFirst();
-							j=0;
-							p=1;
-							if(istanza.getRotte().get(i).getClienti().size() == 2) 
-							{
-								istanza.getRotte().remove(i);
-								i=0;
-							}
-						}
-					}
-					else
-						j++;				
+				System.out.println(r + " " + p + " " + i);
+				if(istanza.getRotte().get(r).getLineHauls().size() == 1 &&
+						istanza.getRotte().get(r).getBackHauls().size() > 0 && p==1)
+				{
+					p=2;
+				}
+				else if(i!=r && istanza.getRotte().get(r).getClienti().get(p).getTipo().equals("L") &&
+						istanza.getRotte().get(r).getClienti().get(p).getQuantita()+
+						istanza.getRotte().get(i).getQuantitaScarico()<=istanza.getCapacitaVeicoli())
+				{
+					istanza.getRotte().get(i).aggiungoNodoASinistra(istanza.getRotte().get(r).remove(p));
+					i=0;
+				}
+				else if (i!=r && istanza.getRotte().get(r).getClienti().get(p).getTipo().equals("B") &&
+						istanza.getRotte().get(r).getClienti().get(p).getQuantita()+
+						istanza.getRotte().get(i).getQuantitaCarico()<=istanza.getCapacitaVeicoli())
+				{
+					istanza.getRotte().get(i).aggiungoNodoADestra(istanza.getRotte().get(r).remove(p));
+					i=0;
+					p=1;
 				}
 				else
 				{
-					if(i != j && (nodo.getQuantita() + istanza.getRotte().get(j).getQuantitaCarico() <= istanza.getCapacitaVeicoli())) //se il nodo in esame è di tipo B
-					{
-						istanza.getRotte().get(j).aggiungoNodoADestra(nodo);
-						istanza.getRotte().get(i).getClienti().remove(p);
-						j = 0;
-						p=1;
-						if(istanza.getRotte().get(i).getClienti().size() == 2) 
-						{
-							istanza.getRotte().remove(i);
-							i=0;
-						}
-					}
-					else
-						j++;
+					i++;
 				}
-			}	
-			i++;
-			istanza.stampaRotte(); // se tolgo si blocca non so perchè
-			//istanza.setCosto();
-			if(i>istanza.getRotte().size()-1)
-			{
-		 		//LocalSearch.eseguiA(istanza);
-				Collections.sort(istanza.getRotte(), new RottaComparatorByNumNodes());
-				i=0;
+				
+				if(istanza.getRotte().get(r).getClienti().size()==2)
+				{
+					istanza.getRotte().remove(r);
+					i=istanza.getRotte().size();
+				}
 			}
+			p=1;
+			r++;
+			if(r>istanza.getRotte().size()-1)
+				r=0;
 		}
 	}
 	

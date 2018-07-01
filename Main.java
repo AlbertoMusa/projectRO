@@ -12,15 +12,15 @@ public class Main {
 		File folder = new File(folderName);
 		File[] listOfFiles = folder.listFiles();
 		
-		//File sol = new File("soluzioni2.txt");
-		//sol.createNewFile();
-	    //FileWriter writer = new FileWriter(sol);
+		File sol = new File("soluzioni2.txt");
+		sol.createNewFile();
+	    FileWriter writer = new FileWriter(sol);
 	      
 		for(File f: listOfFiles)
 		{
 			// togli ! e metti nome file
-			//if(!f.getName().equals("info.txt")){
-			if(f.getName().equals("C4.txt")){
+			if(!f.getName().equals("info.txt")){
+			//if(f.getName().equals("C4.txt")){
 				//inizializzazione problema
 				//String file = args[0];
 				System.out.println("----------------------------------------------------\n" + f.getName() + "\n");
@@ -40,13 +40,15 @@ public class Main {
 				istanzaP = Risolutore.risolvi(istanzaP, "PAR");		
 				
 				System.out.println("\n" +f.getName() + "\tSEQ: " + istanzaS.getCostoTotale() + "\tPAR: " + istanzaP.getCostoTotale());
-				//writer.write(f.getName() + "\tSEQ: " + istanzaS.getCostoTotale() + "\tPAR: " + istanzaP.getCostoTotale() + "\n");
-				//writer.write("\tSeq\tn veivoli:" + istanzaS.getNumVeicoli() + "\tn rotte:" + istanzaS.getRotte().size() + "\n");
-				//writer.write("\tPar\tn veivoli:" + istanzaP.getNumVeicoli() + "\tn rotte:" + istanzaP.getRotte().size() + "\n\n");
+				writer.write(f.getName() + "\tSEQ: " + istanzaS.getCostoTotale() + "\tPAR: " + istanzaP.getCostoTotale() + "\n");
+				writer.write("\tSeq\tn veivoli:" + istanzaS.getNumVeicoli() + "\tn rotte:" + istanzaS.getRotte().size() + "\n");
+				writer.write("\tPar\tn veivoli:" + istanzaP.getNumVeicoli() + "\tn rotte:" + istanzaP.getRotte().size() + "\n");
+				writer.write("\tStatusPar: " + istanzaS.getStatus() + "\tStatusSeq: " + istanzaP.getStatus() + "\n\n");
+
 
 			}
 		}
-		//writer.close();
+		writer.close();
 	}
 	
 	//stampo le info dell'istanza

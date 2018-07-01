@@ -9,6 +9,7 @@ public class Istanza
 	private int capacitaVeicoli;
 	private ArrayList<Rotta> rotte;
 	private double costoTotale; //costo totale, ovvero la somma delle distanze di tutte le rotte
+	private String status ="NON OK";
 
 	public Istanza(int numVeicoli, int capacitaVeicoli)
 	{
@@ -36,6 +37,10 @@ public class Istanza
 			this.rotte.add(r.copiaDi());
 }
 	
+	public String getStatus()
+	{
+		return this.status;
+	}
 	
 	public void rimuovoRotta(Rotta r)
 	{
@@ -47,14 +52,19 @@ public class Istanza
 		System.out.println("\nELENCO ROTTE");
 		int k = 1;
 		this.costoTotale=0;
+		boolean flag =true;
 		for(Rotta r: this.rotte)
 		{
 			String str = "";
 			if(r.isOk(this.capacitaVeicoli))
 				str = "OK";
 			else
+			{
 				str = "Not OK";
-			
+				flag = false;
+			}
+			if(flag)
+				this.status="OK";
 			System.out.println("\t\t\t\t\t\t\tRotta_" + k + ":\t" + str  + "\t[ " + r.getQuantitaScarico() + " ; " + r.getQuantitaCarico() + " ]\t" + r.getCosto());
 			System.out.println(r.getNodiToString());
 			this.costoTotale= this.costoTotale + r.getCosto();

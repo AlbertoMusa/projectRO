@@ -204,6 +204,14 @@ public class Rotta
 		return d;
 	}
 	
+	public Nodo remove(int n)
+	{
+		Nodo d = this.getClienti().get(n);
+		this.getClienti().remove(d);
+		
+		return d;
+	}
+	
 	
 	//aggiunte alberto
 	
