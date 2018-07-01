@@ -3,22 +3,25 @@ import java.util.*;
 public class LocalSearch
 {
 	public static void esegui(Istanza istanza)
+	{	
+		//qua dobbiamo scegliere l'ordine giusto degli esegui per avere il risultato migliore, nei test che ho fatto io risulta questo
+		eseguiA(istanza);
+		eseguiB(istanza);
+		eseguiC(istanza);
+		eseguiA(istanza);
+		eseguiB(istanza);
+	}
+	
+	private static void eseguiA(Istanza istanza)
 	{
-		for(int i=0; i<istanza.getRotte().size(); i++) //ciclo che prende tutte le rotte
+		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
-			for(int j=1; j<istanza.getRotte().get(i).getClienti().size()-1;j++) //ciclo che prende tutti i clienti non 0 per ogni rotta
+			for(int j=1; j<istanza.getRotte().get(i).getClienti().size()-1;j++)
 			{
-				for(int k=0; k<istanza.getRotte().size(); k++) //ciclo che prende tutte le rotte
+				for(int k=0; k<istanza.getRotte().size(); k++)
 				{
-					for(int w=1;w<istanza.getRotte().get(k).getClienti().size()-1;w++) //ciclo che prende tutti i clienti non 0 per ogni rotta
+					for(int w=1;w<istanza.getRotte().get(k).getClienti().size()-1;w++) 
 					{
-						//in pratica per ogni nodo presente (primi due cicli) lo posiziono in ogni possibile
-						//altro posto scambiandolo con un altro nodo (che prendo con i restanti cicli)
-						//se lo scambio è possibile e conveniente lo faccio e rinizio con la nuova configurazione
-						//quando mi farà passare tutto vuol dire che avrò fatto la miglior configurazione...
-						// fino ad ora ho trattato L e B a parte
-						// il controllo per mischiarli lo faro dopo...
-						// System.out.println(i + " " + j + " " + k + " " + w);
 						if(compara(istanza.getRotte().get(i),
 								istanza.getRotte().get(k),
 								istanza.getRotte().get(i).getClienti().get(j),
@@ -41,10 +44,12 @@ public class LocalSearch
 				}
 			}
 		}
-		
 		istanza.stampaRotte();
 		System.out.println("FINE LS FASE1");
-		
+	}
+	
+	private static void eseguiB(Istanza istanza)
+	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
 			for(int j=1; j<istanza.getRotte().get(i).getClienti().size()-1;j++)
@@ -73,11 +78,12 @@ public class LocalSearch
 				}
 			}
 		}	
-		
 		istanza.stampaRotte();
 		System.out.println("FINE LS FASE2");
-		
-		//qua controllo gli scambi tra L e B (da fare)
+	}
+	
+	private static void eseguiC(Istanza istanza)
+	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
 			for(int k=0; k<istanza.getRotte().size(); k++) 
@@ -96,32 +102,31 @@ public class LocalSearch
 					}
 				}	
 			}
-		}	
-				
+		}
+		istanza.stampaRotte();
+		System.out.println("FINE LS FASE3");
 	}
 	
 	private static boolean compara(Rotta a, Rotta b, Nodo aa, Nodo bb, int c)
 	{
-		if(aa.getID()==bb.getID()) //se il nodo è lo stesso esco
+		if(aa.getID()==bb.getID())
 		{
 			//System.out.println("esco0");
 			return false;
 		}
-		if(!(aa.getTipo().equals(bb.getTipo()))) //se il nodo non è dello stesso tipo esco
+		if(!(aa.getTipo().equals(bb.getTipo())))
 		{
 			//System.out.println("esco1");
 			return false;
 		}
 		if(aa.getTipo().equals("L") &&
 				(a.getQuantitaScarico()-aa.getQuantita()+bb.getQuantita()>c || b.getQuantitaScarico()-bb.getQuantita()+aa.getQuantita()>c))
-		//se i nodi L scambiati hanno scarico maggiore della capacità
 		{
 			//System.out.println("esco21");
 			return false;
 		}
 		if(aa.getTipo().equals("B") &&
 				(a.getQuantitaCarico()-aa.getQuantita()+bb.getQuantita()>c || b.getQuantitaCarico()-bb.getQuantita()+aa.getQuantita()>c))
-		//se i nodi B scambiati hanno carico maggiore della capacità
 		{
 			//System.out.println("esco22");
 			return false;
@@ -134,7 +139,6 @@ public class LocalSearch
 		else
 		{
 			if(calcolaDistanza(a,aa,bb)+calcolaDistanza(b,bb,aa)>=calcolaDistanza(a)+calcolaDistanza(b))
-				//se la distanza con lo scambio conviene più di quella attuale
 				{
 					//System.out.println("esco3");
 					return false;
@@ -215,10 +219,8 @@ public class LocalSearch
 		return sum;	
 	}
 	
-	//nei prossimi due metodi calcolo la distanza tra due punti fino a ricavarla per tutta la rotta
 	private static double calcolaDistanza(Rotta a, Nodo aa, Nodo bb)
 	{
-		//inverto ma se sono nella stessa riga non torna perche 0-1-2-3-4-0 = 0-2-2-3-4
 		double sum=0;
 		for(int i=0; i<a.getClienti().size()-1;i++)
 		{
@@ -280,7 +282,6 @@ public class LocalSearch
 	
 	private static void scambia(Rotta a, Rotta b, Nodo aa, Nodo bb, int aaa, int bbb)
 	{
-		//inverto i nodi aa e bb nelle posizioni aaa e bbb delle rispettive rotte
 		Nodo app=aa;
 		a.getClienti().set(aaa, bb);
 		b.getClienti().set(bbb, app);

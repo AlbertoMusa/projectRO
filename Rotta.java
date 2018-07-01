@@ -137,6 +137,8 @@ public class Rotta
 	
 	private boolean isOrderOk()
 	{
+		if(this.getLineHauls().size()==0)
+			return false;
 		boolean BFound = false;
 		for(Nodo n: this.getClienti())
 		{

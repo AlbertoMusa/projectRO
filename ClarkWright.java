@@ -22,6 +22,7 @@ public class ClarkWright
 			
 		//riordino i saving
 		Collections.sort(savings, new SavingComparatorByValue());
+		Collections.sort(savings, new SavingComparatorByType());
 				
 		//stampo i saving
 		//for(Saving s : savings)
