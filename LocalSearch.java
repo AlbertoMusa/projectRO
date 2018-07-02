@@ -171,6 +171,8 @@ public class LocalSearch
 		{
 			return false;
 		}
+		else if(a.getLineHauls().size() <= 1)
+			return false;
 		return true;
 	}
 	
