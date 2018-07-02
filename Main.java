@@ -10,21 +10,20 @@ public class Main {
 	{
 		//String folderName = "/home/alberto/Workbench/Eclipse/RO/bin/Istance/";
 		String folderName = "D:\\Università\\materiale didattico\\Facoltà di Scienze\\Magistrale\\SEM4\\DS\\projectRO\\Istance\\";
+		
 		File folder = new File(folderName);
 		File[] listOfFiles = folder.listFiles();
 		
-		File sol = new File("soluzioni2.txt");
-		sol.createNewFile();
-	    FileWriter writer = new FileWriter(sol);
+		File riepGLO = new File("riepologoTUTTI.txt");
+		riepGLO.createNewFile();
+	    FileWriter writerGLO = new FileWriter(riepGLO);
 	      
 		for(File f: listOfFiles)
 		{
 			// togli ! e metti nome file
 			if(!f.getName().equals("info.txt")){
 			//if(f.getName().equals("C4.txt")){
-				//inizializzazione problema
-				//String file = args[0];
-				
+							
 				System.out.println("----------------------------------------------------\n" + f.getName() + "\n");
 				String file = folderName + f.getName();
 				
@@ -32,26 +31,90 @@ public class Main {
 				System.out.println("n veicoli: " + istanzaS.getNumVeicoli() + "\tcapacita: " +istanzaS.getCapacitaVeicoli());
 				
 				//risoluzione problema sequenziale
-				istanzaS = Risolutore.risolvi(istanzaS, "SEQ");				
-		
+				long timesS[] = Risolutore.risolvi(istanzaS, "SEQ");							
+				
 				//reinizializzazione problema
 				Istanza istanzaP = letturaFile(file);
 				
 				System.out.println("--------------------------------------------------------------------\n--------------------------------------------------------------------");
 		
 				//risoluzione problema parallelo
-				istanzaP = Risolutore.risolvi(istanzaP, "PAR");		
+				long timesP[] = Risolutore.risolvi(istanzaP, "PAR");		
 				
 				System.out.println("\n" +f.getName() + "\tSEQ: " + istanzaS.getCostoTotale() + "\tPAR: " + istanzaP.getCostoTotale());
-				writer.write(f.getName() + "\tSEQ: " + istanzaS.getCostoTotale() + "\tPAR: " + istanzaP.getCostoTotale() + "\n");
-				writer.write("\tSeq\tn veivoli:" + istanzaS.getNumVeicoli() + "\tn rotte:" + istanzaS.getRotte().size() + "\n");
-				writer.write("\tPar\tn veivoli:" + istanzaP.getNumVeicoli() + "\tn rotte:" + istanzaP.getRotte().size() + "\n");
-				writer.write("\tStatusPar: " + istanzaS.getStatus() + "\tStatusSeq: " + istanzaP.getStatus() + "\n\n");
-
-
+				
+				//scrivo sul riepilogo globale
+				writerGLO.write(f.getName() + "\tSEQ: " + istanzaS.getCostoTotale() + "\tPAR: " + istanzaP.getCostoTotale() + "\n");
+				writerGLO.write("\tSeq\tn veivoli:" + istanzaS.getNumVeicoli() + "\tn rotte:" + istanzaS.getRotte().size() + "\n");
+				writerGLO.write("\tPar\tn veivoli:" + istanzaP.getNumVeicoli() + "\tn rotte:" + istanzaP.getRotte().size() + "\n");
+				writerGLO.write("\tStatusPar: " + istanzaS.getStatus() + "\tStatusSeq: " + istanzaP.getStatus() + "\n\n");
+				
+				//scrivo sui file singoli
+				riepilogoSingolo(f.getName(), istanzaS, "SEQ", timesS);
+				riepilogoSingolo(f.getName(), istanzaP, "PAR", timesP);
 			}
 		}
-		writer.close();
+		writerGLO.close();
+	}
+	
+
+	private static void riepilogoSingolo(String name, Istanza istanza, String mode, long[] tempi) throws IOException
+	{
+		File riepSIN = new File("riepologo_" + mode + "_" + name);
+		riepSIN.createNewFile();
+	    FileWriter writerSIN = new FileWriter(riepSIN);	
+	    
+	    for(int i = 0; i < istanza.getRotte().size(); i++)
+	    	writerSIN.write("Rotta " + (i+1) + " : " + istanza.getRotte().get(i).getNodiToString() + " Costo = " + istanza.getRotte().get(i).getCosto() + "\n");
+	    
+	    writerSIN.write("\nCosto totale = " + istanza.getCostoTotale());
+	    File wd = new File(".");
+	    double bestCosto = getBestCosto(wd.getCanonicalPath() + "\\DetailedSols\\RPA_Solutions\\Detailed_Solution_" + name);
+	    double gap = (istanza.getCostoTotale() - bestCosto)/bestCosto;
+	    writerSIN.write("\nCosto best = " + bestCosto);
+	    writerSIN.write("\nGAP = " + gap);
+	    writerSIN.write("\n\nTempo CW = " + tempi[0]);
+	    writerSIN.write("\nTempo AL = " + tempi[1]);
+	    writerSIN.write("\nTempo LS = " + tempi[2]);
+	    writerSIN.close();
+	}
+	
+	private static double getBestCosto(String file)
+	{
+		File f = new File(file);
+				
+		BufferedReader br = null;
+		FileReader fr = null;
+
+		int row = 0;
+		
+		try {
+			fr = new FileReader(f);
+			br = new BufferedReader(fr);
+
+			String sCurrentLine;
+
+			while ((sCurrentLine = br.readLine()) != null) {
+				row++;
+				switch(row)
+				{	
+					case 9:
+						String[] value = sCurrentLine.split("\\s+");
+						if (br != null)
+							br.close();
+
+						if (fr != null)
+							fr.close();
+						return Double.parseDouble(value[3]);
+				}
+			}
+
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+
+		}
+		return 0;
 	}
 	
 	//stampo le info dell'istanza

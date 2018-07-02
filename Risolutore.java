@@ -5,24 +5,37 @@ import java.util.Collections;
 public class Risolutore
 {
 	
-	public static Istanza risolvi(Istanza istanza, String mode)
+	public static long[] risolvi(Istanza istanza, String mode)
 	{	
+		long startTime = System.currentTimeMillis();
 		ClarkWright.esegui(mode, istanza);
+		long CW_Time = System.currentTimeMillis() - startTime;
+		
 		istanza.stampaRotte();
 		System.out.println("--------------------FINE C&W " + mode +  "--------------------------");
 		
+		startTime = System.currentTimeMillis();
 		aumentaRotte(istanza);
-		istanza.stampaRotte();
-		System.out.println("--------------------FINE AUMENTO--------------------------");
-		
+		//istanza.stampaRotte();
+		//System.out.println("--------------------FINE AUMENTO--------------------------");
 		allineamentoNumeroRotte2(istanza);
+		long AL_Time = System.currentTimeMillis() - startTime;
+
 		istanza.stampaRotte();
 		System.out.println("--------------------FINE ALLINEAMENTO--------------------------");
 
+		startTime = System.currentTimeMillis();
  		LocalSearch.esegui(istanza);
+		long LS_Time = System.currentTimeMillis() - startTime;
  		istanza.stampaRotte();
 		
-		return istanza;
+ 		long times[] = new long[3];
+ 		times[0] = CW_Time;
+ 		times[1] = AL_Time;
+ 		times[2] = LS_Time;
+		//return istanza;
+ 		
+ 		return times;
 	}
 	
 //	public static void allineamentoNumeroRotte(Istanza istanza)
