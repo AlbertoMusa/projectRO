@@ -8,8 +8,8 @@ public class LocalSearch
 		//qua dobbiamo scegliere l'ordine giusto degli esegui per avere il risultato migliore, nei test che ho fatto io risulta questo
 		while(guadagno > 0){
 			double oldCost= istanza.getCostoTotale();
-			eseguiExchange(istanza);
 			eseguiRelocate(istanza);
+			eseguiExchange(istanza);
 			eseguiExchangeOnPartitions(istanza);
 //			eseguiA(istanza);
 //			eseguiB(istanza);

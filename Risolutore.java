@@ -128,6 +128,8 @@ public class Risolutore
 	{
 		int p=1;
 		int r=0;
+		//modifica
+		Collections.sort(istanza.getRotte(), new RottaComparatorByAvgCapacityNodes());
 		while(istanza.getNumVeicoli()<istanza.getRotte().size())
 		{
 			istanza.stampaRotte();
@@ -169,7 +171,12 @@ public class Risolutore
 			p=1;
 			r++;
 			if(r>istanza.getRotte().size()-1)
+			{
 				r=0;
+				//aggiunto
+				Collections.sort(istanza.getRotte(), new RottaComparatorByAvgCapacityNodes());
+			}
+			
 		}
 	
 		assert istanza.getNumVeicoli() >= istanza.getRotte().size() ;
