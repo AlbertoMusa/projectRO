@@ -74,7 +74,7 @@ public class Main {
 				
 				//aggiungo riga per la tabella di riepilo excel
 				String[] rigaS = { f.getName() , "SEQ" , String.valueOf(istanzaS.getCostoTotale()), String.valueOf(gapS), String.valueOf(timesS[0] + timesS[1] + timesS[2])};
-				String[] rigaP = { f.getName() , "PAR" , String.valueOf(istanzaS.getCostoTotale()), String.valueOf(gapP), String.valueOf(timesP[0] + timesP[1] + timesP[2])};
+				String[] rigaP = { f.getName() , "PAR" , String.valueOf(istanzaP.getCostoTotale()), String.valueOf(gapP), String.valueOf(timesP[0] + timesP[1] + timesP[2])};
 				righe.add(rigaS);
 				righe.add(rigaP);
 			}
