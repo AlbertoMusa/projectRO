@@ -1,8 +1,22 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileWriter;
+import java.util.ArrayList;
+
+import org.apache.poi.ss.excelant.*;
+import org.apache.poi.ss.excelant.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Main {
 	
@@ -17,12 +31,17 @@ public class Main {
 		File riepGLO = new File("riepologoTUTTI.txt");
 		riepGLO.createNewFile();
 	    FileWriter writerGLO = new FileWriter(riepGLO);
-	      
+
+	    //dati iniziali per la tabella excel
+	    ArrayList<String[]> righe = new ArrayList<String[]>();
+		String[] header = { "Istanza", "Tipo C&W", "Costo Totale", "GAP", "Tempo (ms)"};
+		righe.add(header);
+
 		for(File f: listOfFiles)
 		{
 			// togli ! e metti nome file
-			//if(!f.getName().equals("info.txt")){
-			if(f.getName().equals("A1.txt")){
+			if(!f.getName().equals("info.txt")){
+			//if(f.getName().equals("A1.txt")){
 							
 				System.out.println("----------------------------------------------------\n" + f.getName() + "\n");
 				String file = folderName + f.getName();
@@ -50,15 +69,81 @@ public class Main {
 				writerGLO.write("\tStatusPar: " + istanzaS.getStatus() + "\tStatusSeq: " + istanzaP.getStatus() + "\n\n");
 				
 				//scrivo sui file singoli
-				riepilogoSingolo(f.getName(), istanzaS, "SEQ", timesS);
-				riepilogoSingolo(f.getName(), istanzaP, "PAR", timesP);
+				double gapS = riepilogoSingolo(f.getName(), istanzaS, "SEQ", timesS);
+				double gapP = riepilogoSingolo(f.getName(), istanzaP, "PAR", timesP);
+				
+				//aggiungo riga per la tabella di riepilo excel
+				String[] rigaS = { f.getName() , "SEQ" , String.valueOf(istanzaS.getCostoTotale()), String.valueOf(gapS), String.valueOf(timesS[0] + timesS[1] + timesS[2])};
+				String[] rigaP = { f.getName() , "PAR" , String.valueOf(istanzaS.getCostoTotale()), String.valueOf(gapP), String.valueOf(timesP[0] + timesP[1] + timesP[2])};
+				righe.add(rigaS);
+				righe.add(rigaP);
 			}
 		}
 		writerGLO.close();
+		
+		//creo tabella excel di riepilogo
+		creaTabellaExcel(righe);
 	}
 	
 
-	private static void riepilogoSingolo(String name, Istanza istanza, String mode, long[] tempi) throws IOException
+	private static void creaTabellaExcel(ArrayList<String[]> righe) throws IOException
+	{
+        Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
+        Sheet sheet = workbook.createSheet("Riepilogo");
+        
+        /* CreationHelper helps us create instances of various things like DataFormat, 
+        Hyperlink, RichTextString etc, in a format (HSSF, XSSF) independent way */
+        CreationHelper createHelper = workbook.getCreationHelper();
+        
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 14);
+        headerFont.setColor(IndexedColors.RED.getIndex());
+
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+        
+        // Create a Row
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < righe.get(0).length; i++) {
+          Cell cell = headerRow.createCell(i);
+          cell.setCellValue(righe.get(0)[i]);
+          cell.setCellStyle(headerCellStyle);
+        }
+        
+        // Create Cell Style for formatting Date
+        CellStyle dateCellStyle = workbook.createCellStyle();
+        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy"));
+
+        
+        // Create Other rows and cells with employees data
+        int rowNum = 1;
+        righe.remove(0);
+        for(String[] riga: righe) {
+            Row row = sheet.createRow(rowNum++);
+
+            row.createCell(0).setCellValue(riga[0]);
+            row.createCell(1).setCellValue(riga[1]);
+            row.createCell(2).setCellValue(riga[2]);
+            row.createCell(3).setCellValue(riga[3]);
+            row.createCell(4).setCellValue(riga[4]);
+        }
+
+		// Resize all columns to fit the content size
+        for(int i = 0; i < righe.get(0).length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+        
+        // Write the output to a file
+        FileOutputStream fileOut = new FileOutputStream("riepilogo.xlsx");
+        workbook.write(fileOut);
+        fileOut.close();
+
+        // Closing the workbook
+        workbook.close();
+	}
+	
+	private static double riepilogoSingolo(String name, Istanza istanza, String mode, long[] tempi) throws IOException
 	{
 		File riepSIN = new File("riepologo_" + mode + "_" + name);
 		riepSIN.createNewFile();
@@ -77,6 +162,8 @@ public class Main {
 	    writerSIN.write("\nTempo AL = " + tempi[1]);
 	    writerSIN.write("\nTempo LS = " + tempi[2]);
 	    writerSIN.close();
+	    
+	    return gap;
 	}
 	
 	private static double getBestCosto(String file)
