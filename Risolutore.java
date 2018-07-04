@@ -4,9 +4,9 @@ import java.util.Collections;
 
 public class Risolutore
 {
-	
 	public static long[] risolvi(Istanza istanza, String mode)
 	{	
+		//clarke-wright
 		long startTime = System.currentTimeMillis();
 		ClarkWright.esegui(mode, istanza);
 		long CW_Time = System.currentTimeMillis() - startTime;
@@ -14,16 +14,16 @@ public class Risolutore
 		istanza.stampaRotte();
 		System.out.println("--------------------FINE C&W " + mode +  "--------------------------");
 		
+		//allinaamento rotte al numero di veicoli
 		startTime = System.currentTimeMillis();
 		aumentaRotte(istanza);
-		//istanza.stampaRotte();
 		//System.out.println("--------------------FINE AUMENTO--------------------------");
 		allineamentoNumeroRotte2(istanza);
 		long AL_Time = System.currentTimeMillis() - startTime;
-
 		istanza.stampaRotte();
 		System.out.println("--------------------FINE ALLINEAMENTO--------------------------");
 
+		//local search
 		startTime = System.currentTimeMillis();
  		LocalSearch.esegui(istanza);
 		long LS_Time = System.currentTimeMillis() - startTime;
@@ -33,7 +33,6 @@ public class Risolutore
  		times[0] = CW_Time;
  		times[1] = AL_Time;
  		times[2] = LS_Time;
-		//return istanza;
  		
  		return times;
 	}
@@ -128,7 +127,7 @@ public class Risolutore
 	{
 		int p=1;
 		int r=0;
-		//modifica
+
 		Collections.sort(istanza.getRotte(), new RottaComparatorByAvgCapacityNodes());
 		while(istanza.getNumVeicoli()<istanza.getRotte().size())
 		{
@@ -173,7 +172,6 @@ public class Risolutore
 			if(r>istanza.getRotte().size()-1)
 			{
 				r=0;
-				//aggiunto
 				Collections.sort(istanza.getRotte(), new RottaComparatorByAvgCapacityNodes());
 			}
 			
@@ -184,11 +182,7 @@ public class Risolutore
 	
 	public static void allineamentoNumeroRotteGio(Istanza istanza)
 	{
-		//Collections.sort(istanza.getRotte(), new RottaComparatorByNumNodes());
 		Collections.sort(istanza.getRotte(), new RottaComparatorByAvgCapacityNodes());
-
-		//Collections.sort(istanza.getRotte(), new RottaComparatorByNumBackHauls());
-		//Collections.sort(istanza.getRotte(), new RottaComparatorByNumLineHauls());
 
 		ArrayList<Rotta> listaRotte = new ArrayList<Rotta>();
 		listaRotte.clear();

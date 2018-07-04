@@ -23,22 +23,15 @@ public class ClarkWright
 		//riordino i saving
 		Collections.sort(savings, new SavingComparatorByValue());
 		Collections.sort(savings, new SavingComparatorByType());
-				
-		//stampo i saving
-		//for(Saving s : savings)
-			//System.out.println(s.getPrimoNodo().getID() + " --- " + s.getSecondoNodo().getID() + "  --> " + s.getValoreSaving());
-		
-		
-		//istanza.stampaRotte();
-		
+						
 		//se mode == "SEQ"
 		if(mode.equals("SEQ")) 
-			Sequenziale(istanza, savings); //eseguo la versione sequenziale dell'algoritmo
-		
-		else
+			Sequenziale(istanza, savings); //eseguo la versione sequenziale dell'algoritmo		
+		else //altrimenti eseguo il parallelo
 			Parallelo(istanza, savings);
 	}
 	
+	//C&W sequenziale
 	public static void Sequenziale(Istanza istanza, ArrayList<Saving> savings)
 	{		
 		ArrayList<Nodo> nodiOccupati = new ArrayList<Nodo>();
@@ -76,6 +69,7 @@ public class ClarkWright
 		}
 	}
 	
+	//C&W parallelo
 	public static void Parallelo(Istanza istanza, ArrayList<Saving> savings)
 	{
 		ArrayList<Nodo> nodiOccupati = new ArrayList<Nodo>();
@@ -85,9 +79,6 @@ public class ClarkWright
 		{
 			Nodo a = savings.get(i).getPrimoNodo();
 			Nodo b = savings.get(i).getSecondoNodo();
-
-			//System.out.println("\n------------------\nSAVING " + a.getID() + "-" + b.getID());
-			//istanza.stampaRotte();
 
 			if(nodiOccupati.contains(a) && nodiOccupati.contains(b))
 				savings.get(i).setMerged();
@@ -107,6 +98,7 @@ public class ClarkWright
 		}
 	}
 	
+	//verifico la possibilità di fondere le rotte
 	private static boolean verificaFusione(int savingIndex, Rotta rotta, Istanza istanza, ArrayList<Saving> savings, ArrayList<Nodo> nodiOccupati)
 	{
 		Nodo a = savings.get(savingIndex).getPrimoNodo();
@@ -129,6 +121,7 @@ public class ClarkWright
 		return false;
 	}
 
+	//provo ad aggiungere un nodo nella rotta 
 	private static boolean verificaAggiuntaNodo(Rotta rotta, Nodo occupato, Nodo daAggiungere, ArrayList<Saving> savings, int savingIndex, Istanza istanza, ArrayList<Nodo> nodiOccupati)
 	{
 		Rotta rottaDaRimuovere = getRottaDatoNodo(daAggiungere, istanza.getRotte());
@@ -139,30 +132,22 @@ public class ClarkWright
 			//SOLO LINEHAUL
 			if((daAggiungere.getTipo().equals("L")) && (controlloCarico(rotta, daAggiungere, "SINISTRA") <= istanza.getCapacitaVeicoli()))
 			{
-				//System.out.println("Fondo con  rotta " + rotta.getNodiToString());
-
-				istanza.rimuovoRotta(rottaDaRimuovere);
+				istanza.getRotte().remove(rottaDaRimuovere);
 				rotta.aggiungoNodoASinistra(daAggiungere);
 				nodiOccupati.add(daAggiungere);
 				nodiOccupati.add(occupato);
 				savings.get(savingIndex).setMerged();
-				
-				//System.out.println("Rimuovo rotta " + rottaDaRimuovere.getNodiToString());			
-				
+								
 				return true;
 			}
 			else if((daAggiungere.getTipo().equals("B")) && (controlloCarico(rotta, daAggiungere, "DESTRA") <= istanza.getCapacitaVeicoli()))
 			{
-				//System.out.println("Fondo con  rotta " + rotta.getNodiToString());
-
-				istanza.rimuovoRotta(rottaDaRimuovere);
+				istanza.getRotte().remove(rottaDaRimuovere);
 				rotta.aggiungoNodoADestra(daAggiungere);
 				nodiOccupati.add(daAggiungere);
 				nodiOccupati.add(occupato);
 				savings.get(savingIndex).setMerged();
-				
-				//System.out.println("Rimuovo rotta " + rottaDaRimuovere.getNodiToString());			
-				
+								
 				return true;
 			}
 		}
@@ -174,31 +159,23 @@ public class ClarkWright
 			{
 				if((daAggiungere.getTipo().equals("B")) && (controlloCarico(rotta, daAggiungere, "DESTRA") <= istanza.getCapacitaVeicoli()))
 				{
-					//System.out.println("Fondo con  rotta " + rotta.getNodiToString());
-
-					istanza.rimuovoRotta(rottaDaRimuovere);
+					istanza.getRotte().remove(rottaDaRimuovere);
 					rotta.aggiungoNodoADestra(daAggiungere);
 					nodiOccupati.add(daAggiungere);
 					nodiOccupati.add(occupato);
 					savings.get(savingIndex).setMerged();
-					
-					//System.out.println("Rimuovo rotta " + rottaDaRimuovere.getNodiToString());
-					
+
 					return true;
 				}
 			}
 			else
 				if(controlloCarico(rotta, daAggiungere, "DESTRA") <= istanza.getCapacitaVeicoli())
 				{
-					//System.out.println("Fondo con  rotta " + rotta.getNodiToString());
-
-					istanza.rimuovoRotta(rottaDaRimuovere);
+					istanza.getRotte().remove(rottaDaRimuovere);
 					rotta.aggiungoNodoADestra(daAggiungere);
 					nodiOccupati.add(daAggiungere);
 					nodiOccupati.add(occupato);
-					savings.get(savingIndex).setMerged();
-					
-					//System.out.println("Rimuovo rotta " + rottaDaRimuovere.getNodiToString());			
+					savings.get(savingIndex).setMerged();		
 					
 					return true;					
 				}
@@ -206,6 +183,7 @@ public class ClarkWright
 		return false;
 	}
 	
+	//controllo se il l'aggiunta del nodo in rotta rispetta i vincoli di carico/scarico
 	private static int controlloCarico(Rotta rotta, Nodo nodo, String lato)
 	{
 		int carico = 0;
@@ -242,7 +220,7 @@ public class ClarkWright
 		}
 	}
 
-	
+	//verifico in quale rotta è situato il nodo in esame
 	private static Rotta getRottaDatoNodo(Nodo nodo, ArrayList<Rotta> rotte)
 	{
 		for(Rotta rotta : rotte)

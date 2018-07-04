@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Istanza
 {
@@ -29,24 +28,15 @@ public class Istanza
 		this.costoTotale = 0;
 	}
 	
+	//assegno le rotte all'istanza
 	public void setRotte(ArrayList<Rotta> _rotte)
 	{
-		//this.rotte = rotte;
 		this.rotte.clear();
 		for(Rotta r : _rotte)
 			this.rotte.add(r.copiaDi());
 }
 	
-	public String getStatus()
-	{
-		return this.status;
-	}
-	
-	public void rimuovoRotta(Rotta r)
-	{
-		this.rotte.remove(r);
-	}
-	
+	//mostro a schermo le informazioni sulle rotte
 	public void stampaRotte()
 	{
 		System.out.println("\nELENCO ROTTE");
@@ -82,12 +72,57 @@ public class Istanza
 		System.out.println("\nCosto Tot:\t" +this.costoTotale);
 	}
 	
+	//aggiorno il costo totale della soluzione
 	public void setCosto()
 	{
 		this.costoTotale=0;
 		for(Rotta r: this.rotte)
 			this.costoTotale= this.costoTotale + r.getCosto();
 	}
+		
+	//metodo che restituisce l'indice della rotta con meno linehaul
+	public int getIndexOfRottaConMenoLineHaul()
+	{
+		int min = 999999999;
+		int index = 0;
+		
+		for(int i = 0; i < this.getRotte().size(); i++)
+		{
+			int amount = this.getRotte().get(i).getLineHauls().size();
+			if(amount < min)
+			{
+				min = amount;
+				index = i;
+			}
+		}
+		
+		return index;
+	}
+
+	//metodo che restituisce l'indice della rotta con scarico medio inferiore
+	public double getIndexOfRottaConScaricoMedioInferiore()
+	{
+		double min = 99999999999.9999999999999999999999;
+		int index = 0;
+		
+		for(int i = 0; i < this.getRotte().size(); i++)
+		{
+			double amount = this.getRotte().get(i).getQuantitaScarico() / this.getRotte().get(i).getLineHauls().size() ;
+			if(amount < min)
+			{
+				min = amount;
+				index = i;
+			}
+		}
+		
+		return index;
+	}
+	
+	
+//	public void riordinaRotteDallaPiuCortaAllaPiuLunga()
+//	{
+//		Collections.sort(this.rotte, new RottaComparatorByNumNodes());
+//	}
 	
 	public Nodo getDeposito()
 	{
@@ -114,51 +149,13 @@ public class Istanza
 		return this.capacitaVeicoli;
 	}
 	
-	//metodo che restituisce l'indice della rotta con meno linehaul
-	public int getIndexOfRottaConMenoLineHaul()
+	public String getStatus()
 	{
-		int min = 999999999;
-		int index = 0;
-		
-		for(int i = 0; i < this.getRotte().size(); i++)
-		{
-			int amount = this.getRotte().get(i).getLineHauls().size();
-			if(amount < min)
-			{
-				min = amount;
-				index = i;
-			}
-		}
-		
-		return index;
+		return this.status;
 	}
-	
-	public double getIndexOfRottaConScaricoMedioInferiore()
-	{
-		double min = 99999999999.9999999999999999999999;
-		int index = 0;
-		
-		for(int i = 0; i < this.getRotte().size(); i++)
-		{
-			double amount = this.getRotte().get(i).getQuantitaScarico() / this.getRotte().get(i).getLineHauls().size() ;
-			if(amount < min)
-			{
-				min = amount;
-				index = i;
-			}
-		}
-		
-		return index;
-	}
-	
-	public void riordinaRotteDallaPiuCortaAllaPiuLunga()
-	{
-		Collections.sort(this.rotte, new RottaComparatorByNumNodes());
-	}
-	
+
 	public double getCostoTotale()
 	{
 		return this.costoTotale;
 	}
-	
 }

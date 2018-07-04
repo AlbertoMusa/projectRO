@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-import org.apache.poi.ss.excelant.*;
-import org.apache.poi.ss.excelant.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -25,9 +23,7 @@ public class Main {
 		//String folderName = "/home/alberto/Workbench/Eclipse/RO/bin/Istance/";
 		String folderName = "D:\\Università\\materiale didattico\\Facoltà di Scienze\\Magistrale\\SEM4\\DS\\projectRO\\Istance\\";
 		
-		File folder = new File(folderName);
-		File[] listOfFiles = folder.listFiles();
-		
+		//file di riepilogo complessivo
 		File riepGLO = new File("riepologoTUTTI.txt");
 		riepGLO.createNewFile();
 	    FileWriter writerGLO = new FileWriter(riepGLO);
@@ -37,6 +33,9 @@ public class Main {
 		String[] header = { "Istanza", "Tipo C&W", "Costo Totale", "GAP", "Tempo (ms)"};
 		righe.add(header);
 
+		//acquisisco le istanze
+		File folder = new File(folderName);
+		File[] listOfFiles = folder.listFiles();		
 		for(File f: listOfFiles)
 		{
 			// togli ! e metti nome file
@@ -46,6 +45,7 @@ public class Main {
 				System.out.println("----------------------------------------------------\n" + f.getName() + "\n");
 				String file = folderName + f.getName();
 				
+				//inizializzazione del problema
 				Istanza istanzaS = letturaFile(file);
 				System.out.println("n veicoli: " + istanzaS.getNumVeicoli() + "\tcapacita: " +istanzaS.getCapacitaVeicoli());
 				
@@ -73,8 +73,8 @@ public class Main {
 				double gapP = riepilogoSingolo(f.getName(), istanzaP, "PAR", timesP);
 				
 				//aggiungo riga per la tabella di riepilo excel
-				String[] rigaS = { f.getName() , "SEQ" , String.valueOf(istanzaS.getCostoTotale()), String.valueOf(gapS), String.valueOf(timesS[0] + timesS[1] + timesS[2])};
-				String[] rigaP = { f.getName() , "PAR" , String.valueOf(istanzaP.getCostoTotale()), String.valueOf(gapP), String.valueOf(timesP[0] + timesP[1] + timesP[2])};
+				String[] rigaS = { f.getName() , "SEQ" , String.valueOf(istanzaS.getCostoTotale()).replace(".", ","), String.valueOf(gapS).replace(".", ","), String.valueOf(timesS[0] + timesS[1] + timesS[2])};
+				String[] rigaP = { f.getName() , "PAR" , String.valueOf(istanzaP.getCostoTotale()).replace(".", ","), String.valueOf(gapP).replace(".", ","), String.valueOf(timesP[0] + timesP[1] + timesP[2])};
 				righe.add(rigaS);
 				righe.add(rigaP);
 			}
@@ -114,11 +114,10 @@ public class Main {
         // Create Cell Style for formatting Date
         CellStyle dateCellStyle = workbook.createCellStyle();
         dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy"));
-
         
         // Create Other rows and cells with employees data
-        int rowNum = 1;
         righe.remove(0);
+        int rowNum = 1;
         for(String[] riga: righe) {
             Row row = sheet.createRow(rowNum++);
 
@@ -127,12 +126,13 @@ public class Main {
             row.createCell(2).setCellValue(riga[2]);
             row.createCell(3).setCellValue(riga[3]);
             row.createCell(4).setCellValue(riga[4]);
+//            row.getCell(2).setCellType(Cell.CELL_TYPE_NUMERIC);
+//            row.getCell(3).setCellType(Cell.CELL_TYPE_NUMERIC);
         }
 
 		// Resize all columns to fit the content size
-        for(int i = 0; i < righe.get(0).length; i++) {
+        for(int i = 0; i < righe.get(0).length; i++)
             sheet.autoSizeColumn(i);
-        }
         
         // Write the output to a file
         FileOutputStream fileOut = new FileOutputStream("riepilogo.xlsx");

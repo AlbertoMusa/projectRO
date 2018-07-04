@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class LocalSearch
 {
 	public static void esegui(Istanza istanza)
@@ -11,12 +9,11 @@ public class LocalSearch
 			eseguiRelocate(istanza);
 			eseguiExchange(istanza);
 			eseguiExchangeOnPartitions(istanza);
-//			eseguiA(istanza);
-//			eseguiB(istanza);
 			guadagno = oldCost - istanza.getCostoTotale();
 		}
 	}
 	
+	//eseguo la mossa exchange
 	public static void eseguiExchange(Istanza istanza)
 	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
@@ -53,6 +50,7 @@ public class LocalSearch
 		System.out.println("----------------------FINE LS FASE1----------------------");
 	}
 	
+	//eseguo la mossa relocate
 	public static void eseguiRelocate(Istanza istanza)
 	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
@@ -87,6 +85,7 @@ public class LocalSearch
 		System.out.println("----------------------FINE LS FASE2----------------------");
 	}
 	
+	//eseguo la mossa exchange nei due sottoinsiemi di nodi (linehauls e backhauls)
 	private static void eseguiExchangeOnPartitions(Istanza istanza)
 	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
