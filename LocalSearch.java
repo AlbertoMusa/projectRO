@@ -40,14 +40,14 @@ public class LocalSearch
 							j=1;
 							k=0;
 							w=1;
-							//istanza.stampaRotte();
+							istanza.updateSolution();
+							////istanza.stampaRotte();
 						}	
 					}
 				}
 			}
 		}
-		istanza.stampaRotte();
-		System.out.println("----------------------FINE LS FASE1----------------------");
+		System.out.println("----------------------FINE EXCHANGE----------------------");
 	}
 	
 	//eseguo la mossa relocate
@@ -75,14 +75,14 @@ public class LocalSearch
 								j=1;
 								k=0;
 								w=1;
-								//istanza.stampaRotte();
+						 		istanza.updateSolution();
+								////istanza.stampaRotte();
 							}	
 					}
 				}
 			}
 		}	
-		istanza.stampaRotte();
-		System.out.println("----------------------FINE LS FASE2----------------------");
+		System.out.println("----------------------FINE RELOCATE----------------------");
 	}
 	
 	//eseguo la mossa exchange nei due sottoinsiemi di nodi (linehauls e backhauls)
@@ -100,15 +100,16 @@ public class LocalSearch
 					{
 						istanza.getRotte().set(i, app1);
 						istanza.getRotte().set(k, app2);
-						System.out.println(i + " " + k);
+						//System.out.println(i + " " + k);
+				 		istanza.updateSolution();
 						i=0;
 						k=0;
 					}
 				}	
 			}
 		}
-		istanza.stampaRotte();
-		System.out.println("----------------------FINE LS FASE3----------------------");
+		//istanza.stampaRotte();
+		System.out.println("----------------------FINE EXCHANGE PARTS----------------------");
 	}
 	
 	private static boolean compara(Rotta a, Rotta b, Nodo aa, Nodo bb, int c)

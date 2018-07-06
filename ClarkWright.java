@@ -29,6 +29,9 @@ public class ClarkWright
 			Sequenziale(istanza, savings); //eseguo la versione sequenziale dell'algoritmo		
 		else //altrimenti eseguo il parallelo
 			Parallelo(istanza, savings);
+		
+		//aggiorno costo totale
+		istanza.updateSolution();
 	}
 	
 	//C&W sequenziale

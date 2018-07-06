@@ -34,41 +34,52 @@ public class Istanza
 		this.rotte.clear();
 		for(Rotta r : _rotte)
 			this.rotte.add(r.copiaDi());
-}
+	}
 	
-	//mostro a schermo le informazioni sulle rotte
-	public void stampaRotte()
+	//ricalcolo i costi e i carichi/scarichi della istanza e verifico che tutti i vincoli siano rispettati
+	public void updateSolution()
 	{
-		System.out.println("\nELENCO ROTTE");
-		int k = 1;
-		this.costoTotale=0;
+		this.costoTotale = 0;
 		int fixedNodes = 0;
-		
 		boolean singoleRotteOk = true;
+
 		for(Rotta r: this.rotte)
 		{
-			String str = "";
 			fixedNodes += r.getLineHauls().size() + r.getBackHauls().size();
-			if(r.isOk(this.capacitaVeicoli))
-				str = "OK";
-			else
-			{
-				str = "NON OK";
+			if(!r.isOk(this.capacitaVeicoli))
 				singoleRotteOk = false;
-			}
-
-			System.out.println("Rotta_" + k + ":\t" + str  + "\t[ " + r.getQuantitaScarico() + " ; " + r.getQuantitaCarico() + " ]\t" + r.getCosto() + "\t" + r.getNodiToString());
-			this.costoTotale= this.costoTotale + r.getCosto();
-			k++;
+			
+			r.updateLoad();
+			this.costoTotale = this.costoTotale + r.getCosto();
 		}
 		
 		if(singoleRotteOk && (fixedNodes == this.clienti.length))
 			this.status="OK";
 		else
 			this.status="NON OK";
-		
+	
 		assert this.status == "OK";
-		
+
+	}
+	
+	
+	//mostro a schermo le informazioni sulle rotte
+	public void stampaRotte()
+	{
+		System.out.println("\nELENCO ROTTE");
+		int k = 1;
+		for(Rotta r: this.rotte)
+		{
+			String str = "";
+			if(r.isOk(this.capacitaVeicoli))
+				str = "OK";
+			else
+				str = "NON OK";
+			
+			System.out.println("Rotta_" + k + ":\t" + str  + "\t[ " + r.getQuantitaScarico() + " ; " + r.getQuantitaCarico() + " ]\t" + r.getCosto() + "\t" + r.getNodiToString());
+			k++;
+		}
+				
 		System.out.println("\nCosto Tot:\t" +this.costoTotale);
 	}
 	

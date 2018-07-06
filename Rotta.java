@@ -113,8 +113,8 @@ public class Rotta
 		
 		boolean ok = order && load;
 
-		assert load==true;
-		assert order==true;
+//		assert load==true;
+//		assert order==true;
 			
 		return ok;
 	}
@@ -142,22 +142,12 @@ public class Rotta
 	//verifico se la rotta rispetta i vincoli del carico/scarico
 	private boolean isLoadOk(int capacita)
 	{		
-		int carico = 0;
-		int scarico = 0;
+		this.updateLoad();
 		
-		for(Nodo n: this.getLineHauls())
-			scarico += n.getQuantita();
-				
-		for(Nodo n: this.getBackHauls())
-			carico += n.getQuantita();
-		
-		this.quantitaScarico = scarico;
-		this.quantitaCarico = carico;
-
-		if(carico > capacita)
+		if(this.getQuantitaScarico() > capacita)
 			return false;
 
-		if(scarico > capacita)
+		if(this.getQuantitaCarico() > capacita)
 			return false;
 		
 		return true;

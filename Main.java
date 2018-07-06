@@ -40,7 +40,7 @@ public class Main {
 		{
 			// togli ! e metti nome file
 			if(!f.getName().equals("info.txt")){
-			//if(f.getName().equals("A1.txt")){
+			//if(f.getName().equals("D1.txt")){
 							
 				System.out.println("----------------------------------------------------\n" + f.getName() + "\n");
 				String file = folderName + f.getName();
