@@ -54,7 +54,6 @@ public class ClarkWright
 			{
 				Nodo a = savings.get(i).getPrimoNodo();
 				Nodo b = savings.get(i).getSecondoNodo();
-				//System.out.println("\n------------------\nSAVING " + a.getID() + "-" + b.getID());
 
 				//se i nodi del saving sono gia' stati piazzati allora, setto il saving come "sistemato", quindi esco 
 				if((istanza.getRotte().get(j).cercaNodo(a) > -1) && (istanza.getRotte().get(j).cercaNodo(b) > -1))

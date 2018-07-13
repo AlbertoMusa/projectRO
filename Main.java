@@ -20,8 +20,11 @@ public class Main {
 	
 	public static void main(String [] args) throws IOException
 	{
+	    File wd = new File(".");
+	    String folderName = wd.getCanonicalPath() + "\\Istance\\";
+
 		//String folderName = "/home/alberto/Workbench/Eclipse/RO/bin/Istance/";
-		String folderName = "D:\\Università\\materiale didattico\\Facoltà di Scienze\\Magistrale\\SEM4\\DS\\projectRO\\Istance\\";
+		//String folderName = "D:\\Università\\materiale didattico\\Facoltà di Scienze\\Magistrale\\SEM4\\DS\\projectRO\\Istance\\";
 		
 		//file di riepilogo complessivo
 		File riepGLO = new File("riepologoTUTTI.txt");
@@ -126,8 +129,7 @@ public class Main {
             row.createCell(2).setCellValue(riga[2]);
             row.createCell(3).setCellValue(riga[3]);
             row.createCell(4).setCellValue(riga[4]);
-//            row.getCell(2).setCellType(Cell.CELL_TYPE_NUMERIC);
-//            row.getCell(3).setCellType(Cell.CELL_TYPE_NUMERIC);
+
         }
 
 		// Resize all columns to fit the content size

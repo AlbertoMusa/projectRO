@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.Collections;
-
-
 public class Risolutore
 {
 	public static long[] risolvi(Istanza istanza, String mode)
@@ -11,13 +7,15 @@ public class Risolutore
 		ClarkWright.esegui(mode, istanza);
 		long CW_Time = System.currentTimeMillis() - startTime;
 		System.out.println("--------------------FINE C&W " + mode +  "--------------------------");
+		istanza.stampaRotte();
 		
 		//allinaamento rotte al numero di veicoli
 		startTime = System.currentTimeMillis();
 		AllineamentoRotte.esegui(istanza);
 		long AL_Time = System.currentTimeMillis() - startTime;
 		System.out.println("--------------------FINE ALLINEAMENTO--------------------------");
-
+		istanza.stampaRotte();
+		
 		//local search
 		startTime = System.currentTimeMillis();
  		LocalSearch.esegui(istanza);

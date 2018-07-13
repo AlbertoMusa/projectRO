@@ -6,11 +6,12 @@ public class LocalSearch
 		//qua dobbiamo scegliere l'ordine giusto degli esegui per avere il risultato migliore, nei test che ho fatto io risulta questo
 		while(guadagno > 0){
 			double oldCost= istanza.getCostoTotale();
-			eseguiRelocate(istanza);
-			eseguiExchange(istanza);
 			eseguiExchangeOnPartitions(istanza);
+			eseguiExchange(istanza);
+			eseguiRelocate(istanza);
 			guadagno = oldCost - istanza.getCostoTotale();
 		}
+		eseguiExchangeOnPartitions(istanza);
 	}
 	
 	//eseguo la mossa exchange

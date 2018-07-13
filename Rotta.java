@@ -113,8 +113,8 @@ public class Rotta
 		
 		boolean ok = order && load;
 
-//		assert load==true;
-//		assert order==true;
+		assert load==true;
+		assert order==true;
 			
 		return ok;
 	}
