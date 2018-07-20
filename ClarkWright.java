@@ -93,7 +93,6 @@ public class ClarkWright
 					//se almeno uno dei due nodi del saving in esame e' presente all'interno della rotta i-esima
 					if((istanza.getRotte().get(j).cercaNodo(a) > -1) ^ (istanza.getRotte().get(j).cercaNodo(b) > -1))
 						merged = verificaFusione(i, istanza.getRotte().get(j), istanza, savings, nodiOccupati);
-					
 	
 					if(merged) break;
 				}
@@ -184,7 +183,7 @@ public class ClarkWright
 		}
 		return false;
 	}
-	
+		
 	//controllo se il l'aggiunta del nodo in rotta rispetta i vincoli di carico/scarico
 	private static int controlloCarico(Rotta rotta, Nodo nodo, String lato)
 	{
