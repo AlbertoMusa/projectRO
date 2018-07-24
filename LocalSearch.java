@@ -14,9 +14,12 @@ public class LocalSearch
 		}
 	}
 	
-	//eseguo la mossa exchange
+	//eseguo la mossa exchange 
 	public static void eseguiScambi(Istanza istanza)
 	{
+		//scorro tutte i nodi j della rotta i e li confronto con tutti i nodi w della rotta k.
+		//con il metodo compara verifico che le condizioni di scambio siano valide, in una serie di if a catena
+		// se sono valide scambio i due nodi e rinizializzo tutte le variabili del metodo
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
 			for(int j=1; j<istanza.getRotte().get(i).getClienti().size()-1;j++)
@@ -52,8 +55,12 @@ public class LocalSearch
 	}
 	
 	//eseguo la mossa relocate
+	
 	public static void eseguiRilocazione(Istanza istanza)
 	{
+	//scorro tutte i nodi j della rotta i e li confronto con tutti i nodi w della rotta k.
+	//con il metodo compara verifico che le condizioni di riallocamento siano valide, in una serie di if a catena
+	// se sono valide rialloco il nodo j alla destra di w e rinizializzo tutte le variabili del metodo
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
 			for(int j=1; j<istanza.getRotte().get(i).getClienti().size()-1;j++)
@@ -89,6 +96,10 @@ public class LocalSearch
 	//eseguo la mossa exchange nei due sottoinsiemi di nodi (linehauls e backhauls)
 	private static void eseguiScambiTraRotte(Istanza istanza)
 	{
+	//scorro tutte le rotte i e le confronto con tutte le rotte k. Verifico che non si tratti della stessa rotta
+	//se non è cosi metto in due liste distinte i nodi di diverso tipo sia per i che per k
+	//a questo punto combino le sottoliste in maniera tale che la prima appartenga ad una lista e la seconda ad un altra
+	//e viceversa, se lo scambio risulta vantaggioso confermo lo scambio e resetto le variabili del metodo.
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
 			for(int k=0; k<istanza.getRotte().size(); k++) 
@@ -113,6 +124,9 @@ public class LocalSearch
 	
 	private static boolean compara(Rotta a, Rotta b, Nodo aa, Nodo bb, int c)
 	{
+		//controllo se due nodi sono uguali, non appartengono allo stesso tipo, non superano la capacità massima,
+		//uno dei due non sia l'ultimo nodo di linehaul, che la nuova configurazione non sia vantaggiosa
+		//se tutte sono false restituisco vero
 		if(aa.getID()==bb.getID())
 		{
 			//System.out.println("esco0");
@@ -153,6 +167,9 @@ public class LocalSearch
 	
 	private static boolean compara(Rotta a, Rotta b, Nodo aa, int bbb, int c)
 	{
+		//controllo se due nodi sono uguali, non appartengono allo stesso tipo, non superano la capacità massima,
+		//uno dei due non sia l'ultimo nodo di linehaul, che la nuova configurazione non sia vantaggiosa
+		//se tutte sono false restituisco vero
 		if(a.equals(b))
 		{
 			return false;
@@ -180,6 +197,9 @@ public class LocalSearch
 		return true;
 	}
 	
+	//con tutti i metodi calcola distanza calcolo i pesi della rotta data utilizzando la formula della distanza tra due punti
+	//ripetuta per ogni nodo della rotta e il suo successivo e sommando tra loro tutti i risultati
+	//ho più casi in maniera tale da calcolarla anche con l'aggiunta di un nuovo nodo o la rimozione/spostamento di un vecchio o entrambe
 	private static double calcolaDistanza(Nodo aa, Nodo bb,Rotta a)
 	{
 		double sum=0;
@@ -286,6 +306,8 @@ public class LocalSearch
 		return sum;
 	}
 	
+	//scambio i nodi di due rotte distinte nel primo metodo
+	//nel secondo aggiungo un nodo ad una rotta e rimuovo il medesimo da un'altra
 	private static void scambia(Rotta a, Rotta b, Nodo aa, Nodo bb, int aaa, int bbb)
 	{
 		Nodo app=aa;
