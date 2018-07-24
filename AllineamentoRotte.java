@@ -11,7 +11,9 @@ public class AllineamentoRotte
 		else if(istanza.getNumVeicoli() < n)
 			riduciRotte(istanza);
 	}
-	
+	//scorro le rotte, se la rotta ha piu di un nodo L rimuovo un nodo L per aggiungerlo ad una nuova
+	// se invece ne ha solo uno passo alla rotta successiva e ripeto
+	// ripeto la procedura finche non ho ottenuto il numero di rotte desiderato
 	private static void aumentaRotte(Istanza istanza)
 	{
 		int j=0;
@@ -28,6 +30,10 @@ public class AllineamentoRotte
  		istanza.updateSolution();
 	}
 	
+	//ordino le rotte per valore medio dei nodi più basso, successivamente partendo dalla prima rotta in elenco
+	//cerco di spostare un suo nodo in una delle restanti rotte (ove possibile) rispettando i vincoli di capacità
+	//procedo finche la rotta non sarà vuota e a questo punto la elimino
+	//ripeto l'operazione con le rotte successive finche non raggiungo il numero di rotte desiderato
 	private static void riduciRotte(Istanza istanza)
 	{
 		int p=1;
