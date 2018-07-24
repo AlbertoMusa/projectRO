@@ -3,19 +3,19 @@ public class LocalSearch
 	public static void esegui(Istanza istanza)
 	{	
 		double guadagno = 1;
-		//qua dobbiamo scegliere l'ordine giusto degli esegui per avere il risultato migliore, nei test che ho fatto io risulta questo
+
+		//finche questa routine migliorara la soluzione procedo
 		while(guadagno > 0){
 			double oldCost= istanza.getCostoTotale();
-			eseguiExchangeOnPartitions(istanza);
-			eseguiExchange(istanza);
-			eseguiRelocate(istanza);
+			eseguiScambiTraRotte(istanza);
+			eseguiScambi(istanza);
+			eseguiRilocazione(istanza);
 			guadagno = oldCost - istanza.getCostoTotale();
 		}
-		eseguiExchangeOnPartitions(istanza);
 	}
 	
 	//eseguo la mossa exchange
-	public static void eseguiExchange(Istanza istanza)
+	public static void eseguiScambi(Istanza istanza)
 	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
@@ -52,7 +52,7 @@ public class LocalSearch
 	}
 	
 	//eseguo la mossa relocate
-	public static void eseguiRelocate(Istanza istanza)
+	public static void eseguiRilocazione(Istanza istanza)
 	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
@@ -87,7 +87,7 @@ public class LocalSearch
 	}
 	
 	//eseguo la mossa exchange nei due sottoinsiemi di nodi (linehauls e backhauls)
-	private static void eseguiExchangeOnPartitions(Istanza istanza)
+	private static void eseguiScambiTraRotte(Istanza istanza)
 	{
 		for(int i=0; i<istanza.getRotte().size(); i++)
 		{
@@ -101,7 +101,6 @@ public class LocalSearch
 					{
 						istanza.getRotte().set(i, app1);
 						istanza.getRotte().set(k, app2);
-						//System.out.println(i + " " + k);
 				 		istanza.updateSolution();
 						i=0;
 						k=0;
@@ -109,7 +108,6 @@ public class LocalSearch
 				}	
 			}
 		}
-		//istanza.stampaRotte();
 		System.out.println("----------------------FINE EXCHANGE PARTS----------------------");
 	}
 	
