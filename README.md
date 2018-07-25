@@ -1,4 +1,4 @@
-# projectRO
+# projectRO: risolutore di un CVRPB con euristiche
 - Main: classe iniziale, che avvia il Risolutore
 - Nodo: classe che descrive i nodi (ovvero i clienti)
 - Rotta: classe che rappresenta le rotte che si andranno a creare
@@ -13,9 +13,13 @@
 - Local Search: classe per il miglioramento della soluzione tramite manovre di Local Search
 
 
-# ISTRUZIONI
-compilazione senza IDE
+# ISTRUZIONI senza IDE
+compilazione:
 javac -cp .\poi-3.17\poi-3.17.jar;.\poi-3.17\poi-examples-3.17.jar;.\poi-3.17\poi-excelant-3.17.jar;.\poi-3.17\poi-ooxml-3.17.jar;.\poi-3.17\poi-ooxml-schemas-3.17.jar;.\poi-3.17\poi-scratchpad-3.17.jar;.\poi-3.17\ooxml-lib\curvesapi-1.04.jar;.\poi-3.17\ooxml-lib\xmlbeans-2.6.0.jar;.\poi-3.17\lib\commons-codec-1.10.jar;.\poi-3.17\lib\commons-collections4-4.1.jar;.\poi-3.17\lib\commons-logging-1.2.jar;.\poi-3.17\lib\junit-4.12.jar:.\poi-3.17\lib\log4j-1.2.17.jar; Main.java
 
-esecuzione senza IDE
+esecuzione:
 java -cp .\poi-3.17\poi-3.17.jar;.\poi-3.17\poi-examples-3.17.jar;.\poi-3.17\poi-excelant-3.17.jar;.\poi-3.17\poi-ooxml-3.17.jar;.\poi-3.17\poi-ooxml-schemas-3.17.jar;.\poi-3.17\poi-scratchpad-3.17.jar;.\poi-3.17\ooxml-lib\curvesapi-1.04.jar;.\poi-3.17\ooxml-lib\xmlbeans-2.6.0.jar;.\poi-3.17\lib\commons-codec-1.10.jar;.\poi-3.17\lib\commons-collections4-4.1.jar;.\poi-3.17\lib\commons-logging-1.2.jar;.\poi-3.17\lib\junit-4.12.jar:.\poi-3.17\lib\log4j-1.2.17.jar; Main
+
+
+# ISTRUZIONI con IDE
+importare tutti i .jar presenti nella cartella poi-3.17 al java build path
