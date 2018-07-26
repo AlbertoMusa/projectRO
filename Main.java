@@ -21,10 +21,12 @@ public class Main {
 	public static void main(String [] args) throws IOException
 	{
 	    File wd = new File(".");
-	    String folderName = wd.getCanonicalPath() + "\\Istance\\";
+	    String folderName = "";
 
-		//String folderName = "/home/alberto/Workbench/Eclipse/RO/bin/Istance/";
-		//String folderName = "D:\\Universit‡\\materiale didattico\\Facolt‡ di Scienze\\Magistrale\\SEM4\\DS\\projectRO\\Istance\\";
+		if(os.indexOf("win") >= 0)
+			folderName = wd.getCanonicalPath() + "\\Istance\\";
+		else
+			folderName = wd.getCanonicalPath() + "/Istance/";
 		
 		//file di riepilogo complessivo
 		File riepGLO = new File("riepologoTUTTI.txt");
@@ -156,7 +158,12 @@ public class Main {
 	    
 	    writerSIN.write("\nCosto totale = " + istanza.getCostoTotale());
 	    File wd = new File(".");
-	    double bestCosto = getBestCosto(wd.getCanonicalPath() + "\\DetailedSols\\RPA_Solutions\\Detailed_Solution_" + name);
+		double bestCosto = 0.0;
+		if(os.indexOf("win") >= 0)
+			bestCosto = getBestCosto(wd.getCanonicalPath() + "\\DetailedSols\\RPA_Solutions\\Detailed_Solution_" + name);
+		else
+			bestCosto = getBestCosto(wd.getCanonicalPath() + "/DetailedSols/RPA_Solutions/Detailed_Solution_" + name);
+		
 	    double gap = (istanza.getCostoTotale() - bestCosto)/bestCosto;
 	    writerSIN.write("\nCosto best = " + bestCosto);
 	    writerSIN.write("\nGAP = " + gap);
@@ -215,7 +222,7 @@ public class Main {
 		
 		System.out.println("Numero clienti = " + numClienti);
 		System.out.println("Numero veicoli = " + istanza.getNumVeicoli());
-		System.out.println("Capacit‡  veicoli = " + istanza.getCapacitaVeicoli());
+		System.out.println("Capacit√†  veicoli = " + istanza.getCapacitaVeicoli());
 		System.out.println("---------------------------------------");
 		System.out.println("Deposito");
 		System.out.println("Coord { " + dep.getX() +  " , " + dep.getY() + " }");
