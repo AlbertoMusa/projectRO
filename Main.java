@@ -18,6 +18,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Main {
 	
+	public static String os = System.getProperty("os.name").toLowerCase();
+	
 	public static void main(String [] args) throws IOException
 	{
 	    File wd = new File(".");
